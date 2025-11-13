@@ -42,7 +42,9 @@
 ### Libraries & Dependencies
 - **ng-apexcharts**: ^2.x (Chart visualization)
 - **apexcharts**: ^3.x (Chart library)
+- **xlsx**: ^0.18.x (Excel export functionality)
 - **Angular Router**: For navigation
+- **Angular Forms**: For two-way data binding in filters
 
 ### Development Tools
 - **Angular CLI**: For project scaffolding and build
@@ -59,24 +61,59 @@ application-response/
 │   ├── app/
 │   │   ├── components/           # Reusable components
 │   │   │   ├── sidebar/          # Navigation sidebar
+│   │   │   │   ├── sidebar.ts
+│   │   │   │   ├── sidebar.html
+│   │   │   │   └── sidebar.scss
 │   │   │   ├── summary-cards/    # Dashboard summary cards
+│   │   │   │   ├── summary-cards.ts
+│   │   │   │   ├── summary-cards.html
+│   │   │   │   └── summary-cards.scss
 │   │   │   ├── charts/           # Chart components
 │   │   │   │   ├── line-chart/
+│   │   │   │   │   ├── line-chart.ts
+│   │   │   │   │   ├── line-chart.html
+│   │   │   │   │   └── line-chart.scss
 │   │   │   │   ├── pie-chart/
+│   │   │   │   │   ├── pie-chart.ts
+│   │   │   │   │   ├── pie-chart.html
+│   │   │   │   │   └── pie-chart.scss
 │   │   │   │   ├── bar-chart/
+│   │   │   │   │   ├── bar-chart.ts
+│   │   │   │   │   ├── bar-chart.html
+│   │   │   │   │   └── bar-chart.scss
 │   │   │   │   └── horizontal-bar-chart/
+│   │   │   │       ├── horizontal-bar-chart.ts
+│   │   │   │       ├── horizontal-bar-chart.html
+│   │   │   │       └── horizontal-bar-chart.scss
 │   │   │   └── tables/           # Data table components
 │   │   │       ├── claim-status-table/
+│   │   │       │   ├── claim-status-table.ts
+│   │   │       │   ├── claim-status-table.html
+│   │   │       │   └── claim-status-table.scss
 │   │   │       └── clarification-table/
+│   │   │           ├── clarification-table.ts
+│   │   │           ├── clarification-table.html
+│   │   │           └── clarification-table.scss
 │   │   ├── pages/                # Page components
 │   │   │   ├── dashboard/        # Main dashboard page
+│   │   │   │   ├── dashboard.ts
+│   │   │   │   ├── dashboard.html
+│   │   │   │   └── dashboard.scss
 │   │   │   ├── applications/     # Applications list page
+│   │   │   │   ├── applications.ts
+│   │   │   │   ├── applications.html
+│   │   │   │   └── applications.scss
 │   │   │   └── feedback/         # Feedback page
+│   │   │       ├── feedback.ts
+│   │   │       ├── feedback.html
+│   │   │       └── feedback.scss
 │   │   ├── services/             # Services for data management
 │   │   │   └── dashboard.service.ts
 │   │   ├── app.config.ts         # Application configuration
 │   │   ├── app.routes.ts         # Route definitions
-│   │   └── app.ts                # Root component
+│   │   ├── app.ts                # Root component
+│   │   ├── app.html              # Root template
+│   │   └── app.scss              # Root styles
 │   ├── styles.scss               # Global styles
 │   └── index.html                # Main HTML file
 ├── public/                       # Static assets
@@ -85,8 +122,11 @@ application-response/
 ├── tsconfig.json                 # TypeScript configuration
 ├── README.md                     # Basic project info
 ├── requirement.md                # Original requirements
-└── DOCUMENTATION.md              # This file
+├── PROJECT-REPORT.md             # Quick reference guide
+└── DOCUMENTATION.md              # This file (comprehensive documentation)
 ```
+
+**Note**: Following Angular 20 conventions, component files do not use the `.component` suffix. Files are named simply as `component-name.ts`, `component-name.html`, and `component-name.scss` for better code clarity and reduced verbosity.
 
 ---
 
@@ -127,8 +167,9 @@ application-response/
 #### Claim Status Table
 - **Columns**: ID, Type, Submitted Date, Status, Pending, Actions
 - **Features**:
+  - **Filters**: Search by ID/Type, filter by Type dropdown, filter by Pending range (input fields)
   - View All / Show Less toggle (3 rows default, expand to all)
-  - Export to CSV
+  - Export to Excel (.xlsx format with formatted columns)
   - Delete records with confirmation
   - Status badges (Approved: green, Pending: orange, Rejected: red)
 - **Data**: 5 claim records
@@ -136,8 +177,9 @@ application-response/
 #### Clarification Required Table
 - **Columns**: ID, Name, Submitted Date, Status, Actions
 - **Features**:
-  - View All / Show Less toggle
-  - Export to CSV
+  - **Filters**: Search by ID/Name, filter by Department dropdown, filter by NOC dropdown
+  - View All / Show Less toggle (3 rows default, expand to all)
+  - Export to Excel (.xlsx format with formatted columns)
   - Delete records with confirmation
   - Conditional alerts:
     - Red alert: "Missing documents" (for missing status)
@@ -169,7 +211,7 @@ application-response/
 ## Components Documentation
 
 ### Sidebar Component
-**Path**: `src/app/components/sidebar/sidebar.component.ts`
+**Path**: `src/app/components/sidebar/sidebar.ts`
 
 #### Properties
 - `isCollapsed: WritableSignal<boolean>` - Sidebar collapse state
@@ -178,7 +220,11 @@ application-response/
 - `toggleSidebar()` - Toggles sidebar between collapsed and expanded states
 - `constructor()` - Uses `effect()` to update CSS variable `--sidebar-width`
 
+#### Template
+**Path**: `src/app/components/sidebar/sidebar.html`
+
 #### Styling
+**Path**: `src/app/components/sidebar/sidebar.scss`
 - Expanded width: 260px
 - Collapsed width: 80px
 - Transition: 0.3s ease
@@ -187,7 +233,7 @@ application-response/
 ---
 
 ### Summary Cards Component
-**Path**: `src/app/components/summary-cards/summary-cards.component.ts`
+**Path**: `src/app/components/summary-cards/summary-cards.ts`
 
 #### Data Structure
 ```typescript
@@ -204,24 +250,33 @@ application-response/
 - Hover animations (scale and shadow)
 - Responsive grid layout
 
+#### Template & Styling
+- **Template**: `src/app/components/summary-cards/summary-cards.html`
+- **Styles**: `src/app/components/summary-cards/summary-cards.scss`
+
 ---
 
 ### Chart Components
 
 #### Line Chart Component
-**Path**: `src/app/components/charts/line-chart/line-chart.component.ts`
+**Path**: `src/app/components/charts/line-chart/line-chart.ts`
 
 **Chart Configuration**:
 - Type: Line
 - Height: 350px
 - Data: 7 weeks of application data
 - Colors: Blue (#2196F3)
-- Toolbar: Enabled with download options
+- Toolbar: Enabled with download options (SVG, PNG, CSV)
+
+**Files**:
+- Component: `line-chart.ts`
+- Template: `line-chart.html`
+- Styles: `line-chart.scss`
 
 ---
 
 #### Pie Chart Component
-**Path**: `src/app/components/charts/pie-chart/pie-chart.component.ts`
+**Path**: `src/app/components/charts/pie-chart/pie-chart.ts`
 
 **Chart Configuration**:
 - Type: Pie
@@ -229,12 +284,17 @@ application-response/
 - Data: Approved, Pending, Rejected counts
 - Colors: Green (#4CAF50), Orange (#FF9800), Red (#F44336)
 - Legend: Bottom position
-- Toolbar: Enabled with download options
+- Toolbar: Enabled with download options (SVG, PNG, CSV)
+
+**Files**:
+- Component: `pie-chart.ts`
+- Template: `pie-chart.html`
+- Styles: `pie-chart.scss`
 
 ---
 
 #### Bar Chart Component
-**Path**: `src/app/components/charts/bar-chart/bar-chart.component.ts`
+**Path**: `src/app/components/charts/bar-chart/bar-chart.ts`
 
 **Chart Configuration**:
 - Type: Vertical Bar
@@ -242,12 +302,17 @@ application-response/
 - Data: Status breakdown
 - Colors: Green, Orange, Red
 - Features: Data labels, rounded corners
-- Toolbar: Enabled
+- Toolbar: Enabled with download options (SVG, PNG, CSV)
+
+**Files**:
+- Component: `bar-chart.ts`
+- Template: `bar-chart.html`
+- Styles: `bar-chart.scss`
 
 ---
 
 #### Horizontal Bar Chart Component
-**Path**: `src/app/components/charts/horizontal-bar-chart/horizontal-bar-chart.component.ts`
+**Path**: `src/app/components/charts/horizontal-bar-chart/horizontal-bar-chart.ts`
 
 **Chart Configuration**:
 - Type: Horizontal Bar
@@ -255,23 +320,33 @@ application-response/
 - Data: Pending claims by type
 - Colors: Orange (#FDA00F)
 - Features: Data labels, 60% bar height
-- Toolbar: Enabled
+- Toolbar: Enabled with download options (SVG, PNG, CSV)
+
+**Files**:
+- Component: `horizontal-bar-chart.ts`
+- Template: `horizontal-bar-chart.html`
+- Styles: `horizontal-bar-chart.scss`
 
 ---
 
 ### Table Components
 
 #### Claim Status Table Component
-**Path**: `src/app/components/tables/claim-status-table/claim-status-table.component.ts`
+**Path**: `src/app/components/tables/claim-status-table/claim-status-table.ts`
 
 **Properties**:
 - `claimData: ClaimStatus[]` - Full dataset
-- `displayedData: ClaimStatus[]` - Currently visible data
+- `displayedData: ClaimStatus[]` - Currently visible data (filtered)
 - `showAll: boolean` - View All toggle state
+- `searchTerm: string` - Search filter value
+- `filterType: string` - Type dropdown filter value
+- `filterPendingMin: number | null` - Pending range minimum
+- `filterPendingMax: number | null` - Pending range maximum
 
 **Methods**:
 - `toggleViewAll()` - Toggles between 3 rows and all rows
-- `exportToCSV()` - Exports table data to CSV file
+- `applyFilters()` - Applies search and dropdown filters to data
+- `exportToExcel()` - Exports table data to Excel (.xlsx) file with date-stamped filename
 - `deleteRecord(id: number)` - Deletes record with confirmation
 
 **Data Interface**:
@@ -285,19 +360,30 @@ interface ClaimStatus {
 }
 ```
 
+**Files**:
+- Component: `claim-status-table.ts`
+- Template: `claim-status-table.html`
+- Styles: `claim-status-table.scss`
+
+**Dependencies**: `FormsModule` for `[(ngModel)]`, `xlsx` library for Excel export
+
 ---
 
 #### Clarification Table Component
-**Path**: `src/app/components/tables/clarification-table/clarification-table.component.ts`
+**Path**: `src/app/components/tables/clarification-table/clarification-table.ts`
 
 **Properties**:
 - `clarificationData: ClarificationRequired[]` - Full dataset
-- `displayedData: ClarificationRequired[]` - Currently visible data
+- `displayedData: ClarificationRequired[]` - Currently visible data (filtered)
 - `showAll: boolean` - View All toggle state
+- `searchTerm: string` - Search filter value
+- `filterDepartment: string` - Department dropdown filter value
+- `filterNOC: string` - NOC dropdown filter value
 
 **Methods**:
 - `toggleViewAll()` - Toggles between 3 rows and all rows
-- `exportToCSV()` - Exports table data to CSV file
+- `applyFilters()` - Applies search and dropdown filters to data
+- `exportToExcel()` - Exports table data to Excel (.xlsx) file with date-stamped filename
 - `deleteRecord(id: number)` - Deletes record with confirmation
 
 **Data Interface**:
@@ -313,6 +399,13 @@ interface ClarificationRequired {
 **Conditional Rendering**:
 - Status "missing" → Red alert: "Missing documents"
 - Status "uploaded" → Green alert: "Documents uploaded"
+
+**Files**:
+- Component: `clarification-table.ts`
+- Template: `clarification-table.html`
+- Styles: `clarification-table.scss`
+
+**Dependencies**: `FormsModule` for `[(ngModel)]`, `xlsx` library for Excel export
 
 ---
 
@@ -580,9 +673,9 @@ cd application-response
 npm install
 ```
 
-3. **Install ng-apexcharts**
+3. **Install chart and Excel export libraries**
 ```bash
-npm install ng-apexcharts apexcharts --save
+npm install ng-apexcharts apexcharts xlsx --save
 ```
 
 4. **Start development server**
@@ -598,10 +691,12 @@ http://localhost:4200
 ### Verify Installation
 
 ✅ Dashboard loads without errors
-✅ All 4 charts render correctly
-✅ Tables display data
+✅ All 4 charts render correctly with download menus
+✅ Tables display data with functional filters
+✅ Excel export works for both tables
 ✅ Sidebar navigation works
 ✅ Responsive design functions on mobile
+✅ No `.component` suffix in any filenames (Angular 20 convention)
 
 ---
 
@@ -721,7 +816,7 @@ COPY --from=0 /app/dist/application-response/browser /usr/share/nginx/html
 
 #### 8. Export Enhancements
 - PDF export for reports
-- Excel export with formatting
+- Enhanced Excel export with advanced formatting, formulas, and charts
 - Scheduled email reports
 - Custom report builder
 
@@ -786,16 +881,35 @@ export class DashboardService {
 npm install ng-apexcharts apexcharts --save
 ```
 
-#### 2. Styles not applying
+#### 2. Excel export not working
+**Solution**: Ensure `xlsx` library is installed
+```bash
+npm install xlsx --save
+```
+Check that the import statement is correct: `import * as XLSX from 'xlsx';`
+
+#### 3. Filters not working
+**Solution**: Verify `FormsModule` is imported in component:
+```typescript
+import { FormsModule } from '@angular/forms';
+```
+
+#### 4. Styles not applying
 **Solution**: Check that `styles.scss` is included in `angular.json`
 
-#### 3. Sidebar collapse not working
+#### 5. Sidebar collapse not working
 **Solution**: Verify CSS variable `--sidebar-width` is being updated in `app.scss`
 
-#### 4. Export CSV not working
-**Solution**: Check browser allows file downloads
+#### 6. Component imports failing after upgrade
+**Solution**: After removing `.component` suffix, update all import paths:
+```typescript
+// Old
+import { SidebarComponent } from './sidebar/sidebar.component';
+// New
+import { SidebarComponent } from './sidebar/sidebar';
+```
 
-#### 5. Responsive layout issues
+#### 7. Responsive layout issues
 **Solution**: Clear browser cache and ensure viewport meta tag is present
 
 ---
@@ -835,12 +949,8 @@ npm install ng-apexcharts apexcharts --save
 
 ---
 
-## License
 
-This project is proprietary and confidential.
-
----
-
-**Last Updated**: November 12, 2025  
+**Last Updated**: November 13, 2025  
 **Version**: 1.0.0  
-**Angular Version**: 20.x
+**Angular Version**: 20.x  
+**Git Repository**: [swaagat-departmental-dashboard](https://github.com/gaurav-1220/swaagat-departmental-dashboard)
