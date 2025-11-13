@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DashboardService, ClaimStatus } from '../../../services/dashboard.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-claim-status-table',
@@ -117,33 +118,35 @@ export class ClaimStatusTableComponent implements OnInit {
     }
   }
 
-  exportToCSV(): void {
-    // Export filtered data instead of all data
-    const headers = ['Type', 'Claim Submitted', 'Approved Claim', 'Claim Received', 'Pending'];
-    const rows = this.filteredData.map(item => [
-      item.type,
-      item.claimSubmitted,
-      item.approvedClaim,
-      item.claimReceived,
-      item.pending
-    ]);
+  exportToExcel(): void {
+    // Prepare data for Excel export
+    const exportData = this.filteredData.map(item => ({
+      'Type': item.type,
+      'Claim Submitted': item.claimSubmitted,
+      'Approved Claim': item.approvedClaim,
+      'Claim Received': item.claimReceived,
+      'Pending': item.pending
+    }));
 
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.join(','))
-    ].join('\n');
+    // Create worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    
-    if (link.download !== undefined) {
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', 'claim-status-export.csv');
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    // Set column widths
+    const colWidths = [
+      { wch: 15 }, // Type
+      { wch: 18 }, // Claim Submitted
+      { wch: 18 }, // Approved Claim
+      { wch: 18 }, // Claim Received
+      { wch: 12 }  // Pending
+    ];
+    ws['!cols'] = colWidths;
+
+    // Create workbook and add worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Claim Status');
+
+    // Generate Excel file and download
+    const fileName = `claim-status-${new Date().toISOString().split('T')[0]}.xlsx`;
+    XLSX.writeFile(wb, fileName);
   }
 }

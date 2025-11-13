@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DashboardService, ClarificationItem } from '../../../services/dashboard.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-clarification-table',
@@ -104,35 +105,38 @@ export class ClarificationTableComponent implements OnInit {
     this.updateDisplayedData();
   }
 
-  exportToCSV(): void {
-    const headers = ['Application ID', 'Department', 'NOC', 'Clarification', 'Status', 'Document'];
-    // Export filtered data instead of all data
-    const rows = this.filteredData.map(item => [
-      item.applicationId,
-      item.department,
-      item.noc,
-      item.clarification,
-      item.status,
-      item.documentName || 'N/A'
-    ]);
+  exportToExcel(): void {
+    // Prepare data for Excel export
+    const exportData = this.filteredData.map(item => ({
+      'Application ID': item.applicationId,
+      'Department': item.department,
+      'NOC': item.noc,
+      'Clarification': item.clarification,
+      'Status': item.status,
+      'Document': item.documentName || 'N/A'
+    }));
 
-    const csvContent = [
-      headers.join(','),
-      ...rows.map(row => row.join(','))
-    ].join('\n');
+    // Create worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(exportData);
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement('a');
-    
-    if (link.download !== undefined) {
-      const url = URL.createObjectURL(blob);
-      link.setAttribute('href', url);
-      link.setAttribute('download', 'clarification-export.csv');
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    // Set column widths
+    const colWidths = [
+      { wch: 15 }, // Application ID
+      { wch: 15 }, // Department
+      { wch: 12 }, // NOC
+      { wch: 25 }, // Clarification
+      { wch: 12 }, // Status
+      { wch: 20 }  // Document
+    ];
+    ws['!cols'] = colWidths;
+
+    // Create workbook and add worksheet
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Clarification Required');
+
+    // Generate Excel file and download
+    const fileName = `clarification-required-${new Date().toISOString().split('T')[0]}.xlsx`;
+    XLSX.writeFile(wb, fileName);
   }
 
   deleteRecord(applicationId: string): void {
