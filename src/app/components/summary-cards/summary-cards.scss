@@ -41,26 +41,26 @@
   }
 
   &[data-color="blue"] {
-    --card-color: #2196F3;
+    --card-color: #1976D2;
     
     .icon {
-      background: linear-gradient(135deg, #2196F3 0%, #64B5F6 100%);
+      background: linear-gradient(135deg, #1976D2 0%, #2196F3 100%);
     }
 
     .card-body .value {
-      color: #2196F3;
+      color: #1976D2;
     }
   }
 
   &[data-color="green"] {
-    --card-color: #4CAF50;
+    --card-color: #4CAF50; //hover effect color
     
     .icon {
-      background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%);
+      background: linear-gradient(135deg, #4CAF50 0%, #81C784 100%); //icon background gradient
     }
 
     .card-body .value {
-      color: #4CAF50;
+      color: #4CAF50;  //text color for value
     }
   }
 

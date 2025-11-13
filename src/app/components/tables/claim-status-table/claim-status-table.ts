@@ -8,8 +8,8 @@ import * as XLSX from 'xlsx';
   selector: 'app-claim-status-table',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './claim-status-table.component.html',
-  styleUrl: './claim-status-table.component.scss'
+  templateUrl: './claim-status-table.html',
+  styleUrl: './claim-status-table.scss'
 })
 export class ClaimStatusTableComponent implements OnInit {
   claimData: ClaimStatus[] = [];

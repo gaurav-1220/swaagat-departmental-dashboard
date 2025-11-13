@@ -1,31 +1,32 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgApexchartsModule, ChartComponent, ApexChart, ApexXAxis, ApexYAxis, ApexDataLabels, ApexPlotOptions, ApexGrid, ApexTitleSubtitle, ApexLegend } from 'ng-apexcharts';
+import { NgApexchartsModule, ChartComponent, ApexChart, ApexXAxis, ApexDataLabels, ApexStroke, ApexMarkers, ApexYAxis, ApexGrid, ApexTitleSubtitle, ApexLegend } from 'ng-apexcharts';
 import { DashboardService, DashboardSummary } from '../../../services/dashboard.service';
 
-export type BarChartOptions = {
+export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
   xaxis: ApexXAxis;
-  yaxis: ApexYAxis;
   dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
+  stroke: ApexStroke;
+  markers: ApexMarkers;
   colors: string[];
+  yaxis: ApexYAxis;
   grid: ApexGrid;
   legend: ApexLegend;
   title: ApexTitleSubtitle;
 };
 
 @Component({
-  selector: 'app-bar-chart',
+  selector: 'app-line-chart',
   standalone: true,
   imports: [CommonModule, NgApexchartsModule],
-  templateUrl: './bar-chart.component.html',
-  styleUrl: './bar-chart.component.scss'
+  templateUrl: './line-chart.html',
+  styleUrl: './line-chart.scss'
 })
-export class BarChartComponent implements OnInit {
+export class LineChartComponent implements OnInit {
   @ViewChild('chart') chart!: ChartComponent;
-  public chartOptions!: Partial<BarChartOptions>;
+  public chartOptions!: Partial<ChartOptions>;
 
   constructor(private dashboardService: DashboardService) {}
 
@@ -34,32 +35,40 @@ export class BarChartComponent implements OnInit {
       this.chartOptions = {
         series: [
           {
-            name: 'Applications',
-            data: [data.approved, data.pending, data.rejected]
+            name: 'Approved',
+            data: [45, 52, 58, 65, 70, 75, 80]
+          },
+          {
+            name: 'Pending',
+            data: [35, 32, 30, 28, 27, 26, 25]
+          },
+          {
+            name: 'Rejected',
+            data: [8, 10, 11, 13, 14, 14, 15]
           }
         ],
         chart: {
-          type: 'bar',
           height: 350,
+          type: 'line',
           toolbar: {
             show: true
+          },
+          zoom: {
+            enabled: false
           }
         },
         colors: ['#4CAF50', '#FF9800', '#F44336'],
-        plotOptions: {
-          bar: {
-            distributed: true,
-            borderRadius: 8,
-            horizontal: false,
-            columnWidth: '50%',
-          }
-        },
         dataLabels: {
-          enabled: true,
-          style: {
-            fontSize: '14px',
-            fontWeight: 600,
-            colors: ['#fff']
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 3
+        },
+        markers: {
+          size: 5,
+          hover: {
+            size: 7
           }
         },
         grid: {
@@ -70,28 +79,23 @@ export class BarChartComponent implements OnInit {
           }
         },
         xaxis: {
-          categories: ['Approved', 'Pending', 'Rejected'],
+          categories: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7'],
           title: {
-            text: 'Status'
-          },
-          labels: {
-            style: {
-              fontSize: '12px',
-              fontWeight: 500
-            }
+            text: 'Timeline'
           }
         },
         yaxis: {
           title: {
-            text: 'Count'
+            text: 'Number of Applications'
           },
           min: 0
         },
         legend: {
-          show: false
+          position: 'top',
+          horizontalAlign: 'right'
         },
         title: {
-          text: 'Application Status Breakdown',
+          text: 'Applications Progress',
           align: 'left',
           style: {
             fontSize: '18px',

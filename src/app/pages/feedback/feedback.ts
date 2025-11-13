@@ -5,8 +5,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-feedback',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './feedback.component.html',
-  styleUrl: './feedback.component.scss'
+  templateUrl: './feedback.html',
+  styleUrl: './feedback.scss'
 })
 export class FeedbackComponent {
   

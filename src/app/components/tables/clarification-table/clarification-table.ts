@@ -8,8 +8,8 @@ import * as XLSX from 'xlsx';
   selector: 'app-clarification-table',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './clarification-table.component.html',
-  styleUrl: './clarification-table.component.scss'
+  templateUrl: './clarification-table.html',
+  styleUrl: './clarification-table.scss'
 })
 export class ClarificationTableComponent implements OnInit {
   clarificationData: ClarificationItem[] = [];

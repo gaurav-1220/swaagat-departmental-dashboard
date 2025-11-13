@@ -14,8 +14,8 @@ interface SummaryCard {
   selector: 'app-summary-cards',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './summary-cards.component.html',
-  styleUrl: './summary-cards.component.scss'
+  templateUrl: './summary-cards.html',
+  styleUrl: './summary-cards.scss'
 })
 export class SummaryCardsComponent implements OnInit {
   cards: SummaryCard[] = [];

@@ -6,8 +6,8 @@ import { RouterModule } from '@angular/router';
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterModule],
-  templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.scss',
+  templateUrl: './sidebar.html',
+  styleUrl: './sidebar.scss',
   host: {
     '[class.sidebar-collapsed]': 'isCollapsed()'
   }

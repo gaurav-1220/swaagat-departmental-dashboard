@@ -19,8 +19,8 @@ export type HorizontalBarChartOptions = {
   selector: 'app-horizontal-bar-chart',
   standalone: true,
   imports: [CommonModule, NgApexchartsModule],
-  templateUrl: './horizontal-bar-chart.component.html',
-  styleUrl: './horizontal-bar-chart.component.scss'
+  templateUrl: './horizontal-bar-chart.html',
+  styleUrl: './horizontal-bar-chart.scss'
 })
 export class HorizontalBarChartComponent implements OnInit {
   @ViewChild('chart') chart!: ChartComponent;

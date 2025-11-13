@@ -23,8 +23,8 @@ export type PieChartOptions = {
   selector: 'app-pie-chart',
   standalone: true,
   imports: [CommonModule, NgApexchartsModule],
-  templateUrl: './pie-chart.component.html',
-  styleUrl: './pie-chart.component.scss'
+  templateUrl: './pie-chart.html',
+  styleUrl: './pie-chart.scss'
 })
 export class PieChartComponent implements OnInit {
   @ViewChild('chart') chart!: ChartComponent;
