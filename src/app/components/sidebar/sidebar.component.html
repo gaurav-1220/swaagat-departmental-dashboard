@@ -1,0 +1,40 @@
+<aside class="sidebar" [class.collapsed]="isCollapsed()">
+  <div class="sidebar-header">
+    <div class="logo">
+      @if (!isCollapsed()) {
+        <h2>Swaagat 2.0</h2>
+      } @else {
+        <h2>SW</h2>
+      }
+    </div>
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <span>{{ isCollapsed() ? '→' : '←' }}</span>
+    </button>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul>
+      @for (item of menuItems; track item.route) {
+        <li>
+          <a 
+            [routerLink]="item.route" 
+            routerLinkActive="active"
+            [class.disabled]="!item.active"
+            class="nav-item"
+          >
+            <span class="icon">{{ item.icon }}</span>
+            @if (!isCollapsed()) {
+              <span class="label">{{ item.label }}</span>
+            }
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    @if (!isCollapsed()) {
+      <p class="version">v2.1.0</p>
+    }
+  </div>
+</aside>

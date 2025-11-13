@@ -265,11 +265,14 @@
 
 .table-footer {
   margin-top: 1.5rem;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .view-all-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem 2rem;
     background: linear-gradient(135deg, #FDA00F 0%, #FF8C00 100%);
@@ -467,10 +470,12 @@
     }
   }
 
-  .table-footer .view-all-btn {
-    width: 100%;
-    padding: 0.625rem 1.5rem;
-    font-size: 0.875rem;
+  .table-footer {
+    .view-all-btn {
+      width: 100%;
+      padding: 0.625rem 1.5rem;
+      font-size: 0.875rem;
+    }
   }
 }
 
