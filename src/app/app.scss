@@ -1,0 +1,55 @@
+:root {
+  --sidebar-width: 260px;
+}
+
+.app-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f1f5f9;
+  position: relative;
+}
+
+.main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 100vh;
+  width: calc(100% - var(--sidebar-width));
+}
+
+/* Responsive design for tablets */
+@media (max-width: 1024px) {
+  .main-content {
+    padding: 1.5rem;
+  }
+}
+
+/* Responsive design for tablets (portrait) */
+@media (max-width: 768px) {
+  :root {
+    --sidebar-width: 80px;
+  }
+
+  .main-content {
+    margin-left: 80px;
+    width: calc(100% - 80px);
+    padding: 1rem;
+  }
+}
+
+/* Responsive design for mobile */
+@media (max-width: 480px) {
+  :root {
+    --sidebar-width: 0px;
+  }
+
+  .app-container {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+    padding: 0.75rem;
+  }
+}

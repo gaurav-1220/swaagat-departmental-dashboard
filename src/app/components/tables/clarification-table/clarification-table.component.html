@@ -1,0 +1,127 @@
+<div class="table-container">
+  <div class="table-header">
+    <h3>Clarification Required</h3>
+    <button class="export-btn" (click)="exportToCSV()">
+      <span class="icon">📥</span>
+      Export CSV
+    </button>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <div class="search-box">
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="🔍 Search by ID, Department, NOC..." 
+        [(ngModel)]="searchText"
+        (ngModelChange)="onSearchChange()"
+      />
+    </div>
+
+    <div class="filter-controls">
+      <div class="filter-group">
+        <label for="department-filter">Department:</label>
+        <select 
+          id="department-filter"
+          class="filter-select"
+          [(ngModel)]="selectedDepartment"
+          (ngModelChange)="onDepartmentChange()"
+        >
+          <option value="">All Departments</option>
+          @for (dept of departments; track dept) {
+            <option [value]="dept">{{ dept }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="noc-filter">NOC:</label>
+        <select 
+          id="noc-filter"
+          class="filter-select"
+          [(ngModel)]="selectedNoc"
+          (ngModelChange)="onNocChange()"
+        >
+          <option value="">All NOCs</option>
+          @for (noc of nocs; track noc) {
+            <option [value]="noc">{{ noc }}</option>
+          }
+        </select>
+      </div>
+
+      @if (searchText || selectedDepartment || selectedNoc) {
+        <button class="clear-filters-btn" (click)="clearFilters()">
+          <span class="icon">✖</span>
+          Clear Filters
+        </button>
+      }
+    </div>
+
+    <div class="results-count">
+      Showing {{ displayedData.length }} of {{ filteredData.length }} records
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="clarification-table">
+      <thead>
+        <tr>
+          <th>Application ID</th>
+          <th>Department</th>
+          <th>NOC</th>
+          <th>Clarification</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (displayedData.length > 0) {
+          @for (item of displayedData; track item.applicationId) {
+            <tr>
+              <td class="app-id-cell">
+                <span class="app-id-badge">{{ item.applicationId }}</span>
+              </td>
+              <td>{{ item.department }}</td>
+              <td>
+                <span class="noc-badge">{{ item.noc }}</span>
+              </td>
+              <td>
+                @if (item.status === 'missing') {
+                  <div class="alert alert-danger">
+                    <span class="alert-icon">⚠️</span>
+                    <span class="alert-text">{{ item.clarification }}</span>
+                  </div>
+                } @else {
+                  <div class="alert alert-success">
+                    <span class="alert-icon">✅</span>
+                    <span class="alert-text">
+                      Documents "{{ item.documentName }}" uploaded
+                    </span>
+                  </div>
+                }
+              </td>
+            </tr>
+          }
+        } @else {
+          <tr>
+            <td colspan="4" class="no-data">
+              @if (searchText || selectedDepartment || selectedNoc) {
+                No results found. Try adjusting your filters.
+              } @else {
+                No clarification data available
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (filteredData.length > initialDisplayCount) {
+    <div class="table-footer">
+      <button class="view-all-btn" (click)="toggleViewAll()">
+        {{ showAll ? 'Show Less' : 'View All' }}
+        <span class="icon">{{ showAll ? '▲' : '▼' }}</span>
+      </button>
+    </div>
+  }
+</div>

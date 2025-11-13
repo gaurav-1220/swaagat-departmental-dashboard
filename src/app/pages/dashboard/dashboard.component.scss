@@ -1,0 +1,174 @@
+.dashboard-page {
+  padding: 2rem;
+  max-width: 1600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    margin: 0;
+    font-size: 1rem;
+    color: #64748b;
+  }
+}
+
+.dashboard-section {
+  margin-bottom: 2rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.charts-section {
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+
+    .chart-item {
+      height: 450px;
+      display: flex;
+      flex-direction: column;
+      
+      app-line-chart,
+      app-pie-chart,
+      app-bar-chart,
+      app-horizontal-bar-chart {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        
+        .chart-container {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          
+          apx-chart {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Responsive design for large tablets and small desktops */
+@media (max-width: 1200px) {
+  .dashboard-page {
+    padding: 1.75rem;
+  }
+
+  .charts-section .charts-grid {
+    gap: 1.25rem;
+  }
+}
+
+/* Responsive design for tablets */
+@media (max-width: 1024px) {
+  .dashboard-page {
+    padding: 1.5rem;
+  }
+
+  .charts-section .charts-grid {
+    grid-template-columns: 1fr;
+    
+    .chart-item {
+      height: 400px;
+    }
+  }
+}
+
+/* Responsive design for tablets (portrait) */
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 1.25rem;
+  }
+
+  .dashboard-header {
+    margin-bottom: 1.5rem;
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+    }
+  }
+
+  .charts-section .charts-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+
+    .chart-item {
+      height: 380px;
+    }
+  }
+
+  .dashboard-section {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Responsive design for mobile devices */
+@media (max-width: 480px) {
+  .dashboard-page {
+    padding: 1rem 0.75rem;
+  }
+
+  .dashboard-header {
+    margin-bottom: 1.25rem;
+    padding: 0 0.25rem;
+
+    h1 {
+      font-size: 1.75rem;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+    }
+  }
+
+  .dashboard-section {
+    margin-bottom: 1.25rem;
+  }
+
+  .charts-section .charts-grid {
+    gap: 0.75rem;
+
+    .chart-item {
+      height: 320px;
+    }
+  }
+}
+
+/* Responsive design for very small mobile devices */
+@media (max-width: 375px) {
+  .dashboard-page {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .charts-section .charts-grid .chart-item {
+    height: 300px;
+  }
+}
